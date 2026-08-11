@@ -20,7 +20,7 @@ class GeminiConfig:
     api_key: str = field(default_factory=lambda: os.environ.get("GOOGLE_GENAI_API_KEY", ""))
     project: str = field(default_factory=lambda: os.environ.get("GOOGLE_CLOUD_PROJECT", ""))
     location: str = field(default_factory=lambda: os.environ.get("GOOGLE_CLOUD_LOCATION", "us-central1"))
-    model: str = "gemini-2.5-flash"  # fast + capable; upgrade to pro for complex reasoning
+    model: str = "gemini-3.5-flash"  # fast + capable; upgrade to pro for complex reasoning
 
 
 @dataclass(frozen=True)

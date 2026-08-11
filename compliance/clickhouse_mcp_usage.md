@@ -1,32 +1,54 @@
 # ClickHouse MCP Usage Evidence
 
 **Track:** ClickHouse
-**Requirement:** Project must actively use ClickHouse at runtime via the official ClickHouse MCP server (mcp-clickhouse).
+**Requirement:** Project must actively use ClickHouse at runtime via the official
+ClickHouse MCP server (`mcp-clickhouse`), connecting to ClickHouse Cloud.
 
-## Runtime Integration Points
+## Runtime Integration — How mcp-clickhouse Is Called
 
-| Component | ClickHouse Usage | File |
-|---|---|---|
-| Production Memory | All production events stored/queried via ClickHouse | `src/continuum/tools/clickhouse_tools.py` |
-| MCP Server | Official `mcp-clickhouse` server configured for ADK agents | `src/continuum/mcp/clickhouse_mcp.py` |
-| Agent Queries | Every agent queries ClickHouse for production data | `src/continuum/agents/*.py` |
-| Schema | 8 tables + materialized views for production intelligence | `src/continuum/schema/clickhouse_ddl.sql` |
+1. **`src/continuum/mcp/clickhouse_mcp.py`** defines `get_mcp_params()` which returns
+   `StdioServerParameters` pointing to the `mcp-clickhouse` binary with ClickHouse
+   Cloud connection credentials.
 
-## ClickHouse Tables
+2. **`src/continuum/runner.py`** creates `McpToolset(connection_params=get_mcp_params())`
+   at startup. This launches the mcp-clickhouse stdio server as a subprocess.
 
-1. `production_events` — Core event stream (every production action)
-2. `scenes` — Screenplay structure
-3. `shots` — Planned coverage
-4. `takes` — Captured footage metadata
-5. `props` — Trackable production assets
-6. `wardrobe` — Costume tracking per character
-7. `continuity_issues` — Detected problems
-8. `production_health` — Dashboard metrics
-9. `scene_coverage_mv` — Materialized view for coverage analysis
+3. **All 6 ADK agents** receive the `McpToolset` in their `tools=[]` list. When Gemini
+   decides to query production data, it calls MCP tools (`run_query`, `list_databases`,
+   `list_tables`) which execute against ClickHouse Cloud.
 
-## Package
+4. **`src/continuum/web/app.py`** endpoints trigger agent runs via the runner, which
+   invoke mcp-clickhouse at runtime to answer production queries.
+
+## ClickHouse Cloud Instance
+
+- **Host:** `*.us-central1.gcp.clickhouse.cloud`
+- **Provider:** GCP us-central1
+- **Database:** `continuum`
+- **Version:** 26.2
+
+## ClickHouse Tables (9 total)
+
+1. `production_events` — Core event stream (MergeTree)
+2. `scenes` — Screenplay structure (ReplacingMergeTree)
+3. `shots` — Planned coverage (ReplacingMergeTree)
+4. `takes` — Captured footage metadata (MergeTree)
+5. `props` — Trackable production assets (ReplacingMergeTree)
+6. `wardrobe` — Costume tracking (ReplacingMergeTree)
+7. `continuity_issues` — Detected problems (ReplacingMergeTree)
+8. `scene_coverage_mv` — Coverage analysis (SummingMergeTree)
+9. `production_health` — Dashboard metrics (ReplacingMergeTree)
+
+## Packages
 
 ```
-mcp-clickhouse  # Official ClickHouse MCP server
-clickhouse-connect  # Direct Python client for data loading
+mcp-clickhouse      # Official ClickHouse MCP server (stdio transport)
+clickhouse-connect   # Direct Python client (schema init + data loading + dashboard queries)
 ```
+
+## Verified Runtime Behavior
+
+Agent query → Gemini 3.5 Flash → MCP tool call (`run_query`) → mcp-clickhouse
+→ ClickHouse Cloud → SQL result → Gemini → structured production intelligence response.
+
+Tested end-to-end 2026-08-11: `run_query("SELECT * FROM continuum.props WHERE production_id = 'tls-001'")` → 4 rows returned, agent produced contextual analysis.

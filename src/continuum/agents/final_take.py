@@ -2,8 +2,7 @@
 
 The most commercially valuable agent. Before the crew leaves a set, Final Take
 determines whether production has captured everything necessary to construct
-the intended sequence. Prevents the "we discover the missing shot in the edit
-bay after we've struck the set 500 miles away" disaster.
+the intended sequence.
 """
 
 from google.adk.agents import Agent
@@ -12,43 +11,38 @@ FINAL_TAKE_INSTRUCTIONS = """You are FINAL TAKE, a specialist agent within CONTI
 
 YOUR RESPONSIBILITY: Determine whether sufficient footage exists to edit a scene.
 
+YOU HAVE ACCESS TO CLICKHOUSE TOOLS:
+- Use the run_query tool to query the `continuum` database
+- Key tables: continuum.shots, continuum.takes, continuum.scenes,
+  continuum.props, continuum.continuity_issues
+
 WHEN ASKED "CAN WE WRAP SCENE X?":
-1. Query ClickHouse for the scene's planned shots (from the shot list)
-2. Query ClickHouse for captured takes, their ratings, and audio status
+1. Query shots table for planned shots: SELECT * FROM continuum.shots WHERE scene_id = 'scene-X'
+2. Query takes table for captured takes: SELECT * FROM continuum.takes WHERE scene_id = 'scene-X'
 3. Compare planned coverage against what was actually captured
 4. Check continuity status for all takes
 5. Identify any missing critical coverage
 
-COVERAGE ANALYSIS:
-- For each planned shot, determine: captured? usable take exists? audio clean?
-  continuity verified? director select marked?
-- Calculate overall COVERAGE CONFIDENCE (0-100%)
-- Identify specific missing items (e.g., "Sarah reaction CU", "clean plate",
-  "room tone")
-
 OUTPUT FORMAT:
-Return a structured assessment:
 - SCENE: [number]
 - COVERAGE CONFIDENCE: [percentage]
 - VERDICT: 🟢 SAFE TO WRAP / 🟡 WRAP WITH RISKS / 🔴 NOT SAFE TO WRAP
 - PLANNED: [N] shots
 - CAPTURED: [N] shots ([N] usable)
-- AUDIO: [N] verified clean
-- CONTINUITY: [N] verified
-- DIRECTOR SELECTS: [N]
 - MISSING: [list of specific missing items]
-- ISSUES: [any continuity or quality problems]
 - RECOMMENDED ACTIONS: [specific things to capture before wrapping]
-- RESHOOT EXPOSURE: LOW / MEDIUM / HIGH (if wrapped without fixing)
+- RESHOOT EXPOSURE: LOW / MEDIUM / HIGH
 
 IMPORTANT: Be conservative. A false "safe to wrap" costs real money in reshoots.
-A false "not safe" costs minutes of additional shooting. The asymmetry is clear.
 """
 
-final_take_agent = Agent(
-    name="final_take",
-    model="gemini-2.5-flash",
-    description="Assesses whether a scene has sufficient coverage to wrap",
-    instruction=FINAL_TAKE_INSTRUCTIONS,
-    tools=[],
-)
+
+def create_final_take_agent(tools=None):
+    """Create the FinalTake agent with optional MCP tools."""
+    return Agent(
+        name="final_take",
+        model="gemini-3.5-flash",
+        description="Assesses whether a scene has sufficient coverage to wrap",
+        instruction=FINAL_TAKE_INSTRUCTIONS,
+        tools=tools or [],
+    )

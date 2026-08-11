@@ -35,7 +35,7 @@ It detects conflicts, predicts change impacts, verifies coverage, and coordinate
 
 ### Agent Network
 
-CONTINUUM is a multi-agent system powered by **Gemini** and **Google Cloud Agent Development Kit (ADK)**:
+CONTINUUM is a multi-agent system powered by **Gemini 3.5 Flash** and **Google Cloud Agent Development Kit (ADK)**:
 
 | Agent | Responsibility |
 |---|---|
@@ -44,9 +44,7 @@ CONTINUUM is a multi-agent system powered by **Gemini** and **Google Cloud Agent
 | **CONTINUITY** | Visual/narrative state consistency (digital script supervisor) |
 | **FINAL TAKE** | Coverage assessment — "Do we have the movie?" |
 | **CASCADE** | Change-impact propagation — "What does this change break?" |
-| **CUTMIND** | Semantic footage intelligence |
 | **SKEPTIC** | Adversarial verification of agent conclusions |
-| **RESEARCH** | External intelligence via Parallel Search API |
 
 ### Three Epistemic Layers
 
@@ -77,27 +75,27 @@ Only findings that survive the SKEPTIC's adversarial challenge get escalated to 
         │                  │                  │
    STORYGRAPH          FINAL TAKE         CASCADE
       Agent               Agent             Agent
-        │                  │                  │
-   CONTINUITY           CUTMIND           SKEPTIC
-      Agent               Agent             Agent
-        │                  │                  │
+        │                                     │
+   CONTINUITY                             SKEPTIC
+      Agent                                 Agent
+        │                                     │
         └──────────────────┼──────────────────┘
                            │
-              ┌────────────┼─────────────┐
-              │            │             │
-         ClickHouse    Parallel       Grafana*
-          MEMORY       RESEARCH      DASHBOARDS
-       (MCP Server)  (Search API)   (* optional)
+              ┌────────────┴─────────────┐
+              │                          │
+         ClickHouse                  Parallel
+          MEMORY                     RESEARCH
+       (MCP Server)               (Search API)
 ```
 
 ### Technology Stack
 
 | Component | Technology | Role |
 |---|---|---|
-| **AI Intelligence** | Google Gemini (via `google-adk`) | All reasoning, multimodal analysis |
-| **Agent Framework** | Google Cloud ADK 2.0 | Multi-agent orchestration |
-| **Production Memory** | ClickHouse Cloud (via `mcp-clickhouse`) | Event stream + Living Film Graph |
-| **External Research** | Parallel Search API | Location scouting, historical verification |
+| **AI Intelligence** | Gemini 3.5 Flash (`google-genai`) | All reasoning and analysis |
+| **Agent Framework** | Google Cloud ADK 2.x (`google-adk`) | Multi-agent orchestration |
+| **Production Memory** | ClickHouse Cloud (`mcp-clickhouse`) | Event stream + Living Film Graph |
+| **External Research** | Parallel Search API (`parallel-web`) | Fact verification, research grounding |
 | **Web Interface** | FastAPI + Jinja2 | Production Command Center |
 | **Deployment** | Google Cloud Run | Serverless hosting |
 
@@ -108,7 +106,7 @@ Only findings that survive the SKEPTIC's adversarial challenge get escalated to 
 - Python 3.10+
 - A [Google Cloud](https://cloud.google.com/free) account with Gemini API access
 - A [ClickHouse Cloud](https://clickhouse.com/cloud) account ($400 free credits for new accounts)
-- A [Parallel](https://parallel.ai) API key
+- A [Parallel](https://parallel.ai) API key (optional)
 
 ### Installation
 
@@ -129,45 +127,55 @@ cp .env.example .env
 # Edit .env with your API keys and ClickHouse credentials
 
 # Initialize ClickHouse schema
-# (after configuring your ClickHouse connection)
 python scripts/init_db.py
 
 # Load sample production data
 python scripts/load_sample_data.py
 
 # Run the application
-python -m continuum.web.app
+python -m uvicorn continuum.web.app:app --host 0.0.0.0 --port 8000
 ```
 
-Visit `http://localhost:8080` to see the Production Command Center.
+Visit `http://localhost:8000` to see the Production Command Center.
 
-### Running the ADK Agent
+### API Endpoints
 
-```bash
-# Run the agent with ADK CLI
-adk run continuum_director
-
-# Or with the web interface
-adk web continuum_director
-```
+| Endpoint | Method | Description |
+|---|---|---|
+| `/` | GET | Production Command Center dashboard |
+| `/health` | GET | Health check (includes ClickHouse connectivity) |
+| `/api/production/{id}/status` | GET | Production metrics from ClickHouse |
+| `/api/production/{id}/scenes` | GET | List scenes with status |
+| `/api/production/{id}/scene/{id}` | GET | Scene detail with shots and takes |
+| `/api/agent/query` | POST | Free-form agent query (Gemini + MCP) |
+| `/api/production/{id}/scene/{id}/wrap-check` | POST | FINAL TAKE wrap assessment |
+| `/api/production/{id}/scene/{id}/continuity-check` | POST | Continuity analysis |
+| `/api/production/{id}/cascade` | POST | CASCADE change-impact analysis |
 
 ## Demo Scenario: "The Last Signal"
 
-CONTINUUM ships with a fictional sci-fi production — *THE LAST SIGNAL* — demonstrating the full agent pipeline:
+CONTINUUM ships with a sample sci-fi production — *THE LAST SIGNAL* (47 scenes) — demonstrating the full agent pipeline:
 
-1. **Upload** the screenplay and production state
-2. **Change** Scene 42: "damaged camera" → "undamaged camera"
-3. **Watch** agents detect the cascade: StoryGraph finds the conflict with Scene 31, Continuity flags the prop state mismatch, CutMind identifies already-filmed footage
-4. **Try** to wrap Scene 42 — FINAL TAKE refuses: missing coverage + unresolved continuity conflict
-5. **Fix** the issues and re-assess → 🟢 SAFE TO WRAP
+1. **Scene 31**: Sarah drops Camera P-14 during the first signal event. The camera is now **damaged** (cracked lens, dented body).
+2. **Scene 42**: Sarah enters her apartment with the damaged camera. 8 shots planned, but only 6 captured (42G and 42H missing).
+3. **Ask CONTINUUM**: "Can we wrap Scene 42?"
+4. **Watch** the agent pipeline work:
+   - **FINAL TAKE** queries ClickHouse for shots and takes → finds 2 uncaptured shots
+   - **CONTINUITY** checks prop states → confirms Camera P-14 must show damage
+   - **SKEPTIC** verifies the finding → CONFIRMED
+   - **Verdict**: 🔴 NOT SAFE TO WRAP — missing coverage + continuity risk
 
-## Hackathon Track
+### Try It
 
-**Agentic Cinema: The Blockbuster Hackathon** — ClickHouse Track
+```bash
+# Query the agent pipeline directly
+curl -X POST http://localhost:8000/api/agent/query \
+  -H "Content-Type: application/json" \
+  -d '{"query": "Can we wrap scene-42 in production tls-001?", "production_id": "tls-001"}'
 
-- ClickHouse provides the production memory — every agent queries it via MCP
-- Gemini provides all AI reasoning (no other AI models used)
-- Google Cloud ADK orchestrates the multi-agent network
+# Run the signature wrap check
+curl -X POST http://localhost:8000/api/production/tls-001/scene/scene-42/wrap-check
+```
 
 ## Project Structure
 
@@ -175,21 +183,24 @@ CONTINUUM ships with a fictional sci-fi production — *THE LAST SIGNAL* — dem
 CONTINUUM/
 ├── src/continuum/
 │   ├── agents/          # ADK agent definitions
-│   │   ├── director.py  # Orchestrator
+│   │   ├── director.py  # Orchestrator (routes to sub-agents)
 │   │   ├── storygraph.py
 │   │   ├── continuity.py
 │   │   ├── final_take.py
 │   │   ├── cascade.py
 │   │   └── skeptic.py
+│   ├── runner.py        # ADK Runner + MCP initialization
+│   ├── config.py        # Environment-based configuration
 │   ├── schema/          # Pydantic models + ClickHouse DDL
 │   ├── tools/           # ClickHouse query functions
-│   ├── mcp/             # MCP server integration
-│   └── web/             # FastAPI dashboard
-├── data/                # Sample production data
+│   ├── mcp/             # mcp-clickhouse MCP server config
+│   └── web/             # FastAPI dashboard + API
+├── data/                # Sample production data (THE LAST SIGNAL)
 ├── tests/               # Test suite
-├── docs/                # Documentation
 ├── compliance/          # Hackathon compliance evidence
-└── scripts/             # DB init, data loading
+├── scripts/             # DB init, data loading
+├── Dockerfile           # Cloud Run deployment
+└── pyproject.toml       # Dependencies
 ```
 
 ## License

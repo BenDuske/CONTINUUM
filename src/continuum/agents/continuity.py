@@ -1,8 +1,7 @@
 """CONTINUITY Agent — Visual and narrative state consistency.
 
 The digital script supervisor. Tracks the physical state of everything
-on screen across takes filmed out of order — wardrobe, props, makeup,
-lighting, screen direction, dialogue, timeline.
+on screen across takes filmed out of order.
 """
 
 from google.adk.agents import Agent
@@ -10,6 +9,11 @@ from google.adk.agents import Agent
 CONTINUITY_INSTRUCTIONS = """You are CONTINUITY, a specialist agent within CONTINUUM.
 
 YOUR RESPONSIBILITY: Ensure visual and narrative consistency across the production.
+
+YOU HAVE ACCESS TO CLICKHOUSE TOOLS:
+- Use the run_query tool to query the `continuum` database
+- Key tables: continuum.scenes, continuum.props, continuum.takes,
+  continuum.wardrobe, continuum.continuity_issues, continuum.production_events
 
 YOU TRACK:
 - Prop states (damaged/intact, position, presence/absence)
@@ -32,18 +36,20 @@ For each issue found:
 - SCENE: which scene has the problem
 - CONFLICT: what doesn't match and what it should match
 - EVIDENCE: which scenes/takes establish the correct state
-- SEVERITY: CRITICAL (visible on screen, expensive to fix) / WARNING (may be noticeable)
-  / INFO (minor, may be acceptable)
-- EPISTEMIC: OBSERVED (directly from data) / INFERRED (agent conclusion)
+- SEVERITY: CRITICAL / WARNING / INFO
+- EPISTEMIC: OBSERVED (from data) / INFERRED (agent conclusion)
 
 IMPORTANT: You check PHYSICAL continuity. Story logic is STORYGRAPH's domain.
 Coverage assessment is FINAL_TAKE's domain. Stay in your lane.
 """
 
-continuity_agent = Agent(
-    name="continuity",
-    model="gemini-2.5-flash",
-    description="Checks visual/narrative state consistency across scenes and takes",
-    instruction=CONTINUITY_INSTRUCTIONS,
-    tools=[],
-)
+
+def create_continuity_agent(tools=None):
+    """Create the Continuity agent with optional MCP tools."""
+    return Agent(
+        name="continuity",
+        model="gemini-3.5-flash",
+        description="Checks visual/narrative state consistency across scenes and takes",
+        instruction=CONTINUITY_INSTRUCTIONS,
+        tools=tools or [],
+    )

@@ -35,19 +35,19 @@ def main():
     ddl_path = Path(__file__).resolve().parents[1] / "src" / "continuum" / "schema" / "clickhouse_ddl.sql"
     ddl = ddl_path.read_text()
 
-    # Split on semicolons and execute each statement
-    statements = [s.strip() for s in ddl.split(";") if s.strip() and not s.strip().startswith("--")]
+    # Split on semicolons, strip comment-only lines, filter blanks
+    raw_stmts = ddl.split(";")
+    statements = []
+    for s in raw_stmts:
+        lines = [l for l in s.split("\n") if not l.strip().startswith("--")]
+        clean = "\n".join(lines).strip()
+        if clean:
+            statements.append(clean)
 
     for i, stmt in enumerate(statements, 1):
-        # Skip pure comments
-        lines = [l for l in stmt.split("\n") if not l.strip().startswith("--")]
-        clean = "\n".join(lines).strip()
-        if not clean:
-            continue
-
-        print(f"  [{i}/{len(statements)}] {clean[:80]}...")
+        print(f"  [{i}/{len(statements)}] {stmt[:80]}...")
         try:
-            client.command(clean)
+            client.command(stmt)
             print(f"  ✓ OK")
         except Exception as e:
             print(f"  ✗ ERROR: {e}")

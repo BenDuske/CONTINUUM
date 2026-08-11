@@ -49,9 +49,6 @@ build-backend = "hatchling.build"
 [tool.hatch.build.targets.wheel]
 packages = ["src/continuum"]
 
-[tool.hatch.build.targets.wheel.force-include]
-"src/continuum/web/templates" = "continuum/web/templates"
-
 [tool.ruff]
 target-version = "py310"
 line-length = 100

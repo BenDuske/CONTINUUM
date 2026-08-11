@@ -37,3 +37,6 @@ htmlcov/
 
 # ClickHouse local data
 clickhouse-data/
+
+# Internal brainstorming (not for public repo)
+brainstorming.md

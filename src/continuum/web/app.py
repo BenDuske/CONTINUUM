@@ -65,11 +65,14 @@ def _get_ch_client():
 @app.get("/", response_class=HTMLResponse)
 async def dashboard(request: Request):
     """Production Command Center — main dashboard."""
-    return templates.TemplateResponse("dashboard.html", {
-        "request": request,
-        "title": "CONTINUUM",
-        "production_name": "THE LAST SIGNAL",
-    })
+    return templates.TemplateResponse(
+        request=request,
+        name="dashboard.html",
+        context={
+            "title": "CONTINUUM",
+            "production_name": "THE LAST SIGNAL",
+        },
+    )
 
 
 @app.get("/health")

@@ -11,6 +11,7 @@ mcp-clickhouse stdio server and get query tools automatically.
 
 from __future__ import annotations
 
+import shutil
 import sys
 from pathlib import Path
 
@@ -22,15 +23,20 @@ from continuum.config import config
 def get_mcp_params() -> StdioServerParameters:
     """Return StdioServerParameters for the mcp-clickhouse MCP server.
 
-    The binary is at .venv/bin/mcp-clickhouse (installed via pip).
-    Environment variables configure the ClickHouse connection.
+    Finds the mcp-clickhouse binary: same dir as python, then PATH, then
+    project .venv. Works in venvs, Docker containers, and Cloud Run.
     """
-    # Find the mcp-clickhouse binary in the same venv as this process
+    # 1. Same directory as the running Python interpreter
     venv_bin = Path(sys.executable).parent / "mcp-clickhouse"
     if not venv_bin.exists():
-        # Fallback: try the project's venv
-        project_root = Path(__file__).resolve().parents[3]
-        venv_bin = project_root / ".venv" / "bin" / "mcp-clickhouse"
+        # 2. Anywhere on PATH (Docker: /usr/local/bin)
+        found = shutil.which("mcp-clickhouse")
+        if found:
+            venv_bin = Path(found)
+        else:
+            # 3. Fallback: project's .venv
+            project_root = Path(__file__).resolve().parents[3]
+            venv_bin = project_root / ".venv" / "bin" / "mcp-clickhouse"
 
     return StdioServerParameters(
         command=str(venv_bin),

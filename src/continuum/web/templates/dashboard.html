@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }} — Production Command Center</title>
+    <style>
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --bg-card: #1a1a2e;
+            --text-primary: #e8e8f0;
+            --text-secondary: #8888a0;
+            --accent-green: #00d68f;
+            --accent-yellow: #ffaa00;
+            --accent-red: #ff3d71;
+            --accent-blue: #3366ff;
+            --border: #2a2a40;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            border-bottom: 1px solid var(--border);
+            background: var(--bg-secondary);
+        }
+
+        .header h1 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+        }
+
+        .header .status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--accent-green);
+            font-size: 0.85rem;
+        }
+
+        .header .status::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--accent-green);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        .production-title {
+            text-align: center;
+            padding: 1.5rem;
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1rem;
+            padding: 1rem 2rem;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.25rem;
+        }
+
+        .card .label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
+        }
+
+        .card .value {
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .card .value.green { color: var(--accent-green); }
+        .card .value.yellow { color: var(--accent-yellow); }
+        .card .value.red { color: var(--accent-red); }
+
+        .scene-panel {
+            margin: 1rem 2rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+        }
+
+        .scene-panel h2 {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .scene-panel .scene-slug {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 0.6rem 1.5rem;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.15s;
+            letter-spacing: 0.05em;
+        }
+
+        .btn:hover { border-color: var(--accent-blue); color: var(--accent-blue); }
+
+        .btn-wrap {
+            background: var(--accent-red);
+            border-color: var(--accent-red);
+            color: #fff;
+            font-weight: 700;
+        }
+
+        .btn-wrap:hover { background: #cc2244; border-color: #cc2244; color: #fff; }
+
+        .issues {
+            margin: 1rem 2rem 2rem;
+        }
+
+        .issue {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .issue .badge {
+            padding: 0.15rem 0.5rem;
+            border-radius: 3px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+        }
+
+        .badge.critical { background: var(--accent-red); color: #fff; }
+        .badge.warning { background: var(--accent-yellow); color: #000; }
+        .badge.info { background: var(--accent-blue); color: #fff; }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            letter-spacing: 0.15em;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>CONTINUUM</h1>
+        <div class="status">PRODUCTION LIVE</div>
+    </div>
+
+    <div class="production-title">{{ production_name }}</div>
+
+    <div class="grid">
+        <div class="card">
+            <div class="label">Production Day</div>
+            <div class="value">17 <span style="font-size:1rem;color:var(--text-secondary)">/ 31</span></div>
+        </div>
+        <div class="card">
+            <div class="label">Scenes Complete</div>
+            <div class="value green">63%</div>
+        </div>
+        <div class="card">
+            <div class="label">Coverage Confidence</div>
+            <div class="value green">94%</div>
+        </div>
+        <div class="card">
+            <div class="label">Continuity Confidence</div>
+            <div class="value green">97%</div>
+        </div>
+        <div class="card">
+            <div class="label">Critical Risks</div>
+            <div class="value red">1</div>
+        </div>
+        <div class="card">
+            <div class="label">Warnings</div>
+            <div class="value yellow">3</div>
+        </div>
+        <div class="card">
+            <div class="label">Missing Shots</div>
+            <div class="value yellow">3</div>
+        </div>
+        <div class="card">
+            <div class="label">Reshoot Exposure</div>
+            <div class="value red">HIGH</div>
+        </div>
+    </div>
+
+    <div class="scene-panel">
+        <h2>CURRENT SCENE</h2>
+        <div class="scene-slug">SCENE 42 — INT. SARAH'S APARTMENT — NIGHT</div>
+        <div class="btn-group">
+            <button class="btn" onclick="alert('Agent pipeline not yet connected')">ANALYZE</button>
+            <button class="btn" onclick="alert('Agent pipeline not yet connected')">FINAL TAKE</button>
+            <button class="btn btn-wrap" onclick="alert('Agent pipeline not yet connected')">WRAP SCENE</button>
+        </div>
+    </div>
+
+    <div class="issues">
+        <div class="issue">
+            <span class="badge critical">CRITICAL</span>
+            Prop Camera P-14 state conflict — Scene 31 (damaged) vs Scene 42 (undamaged)
+        </div>
+        <div class="issue">
+            <span class="badge warning">WARNING</span>
+            Scene 42 — Sarah reaction CU not captured
+        </div>
+        <div class="issue">
+            <span class="badge warning">WARNING</span>
+            Scene 42 — Clean background plate missing
+        </div>
+        <div class="issue">
+            <span class="badge info">INFO</span>
+            Scene 42 — Room tone not yet recorded
+        </div>
+    </div>
+
+    <footer>
+        CONTINUUM v0.1.0 — Know you have the movie before you leave the set.
+    </footer>
+</body>
+</html>

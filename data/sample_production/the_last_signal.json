@@ -1,0 +1,34 @@
+{
+  "production_id": "tls-001",
+  "title": "THE LAST SIGNAL",
+  "genre": "Sci-fi thriller",
+  "total_scenes": 47,
+  "total_shooting_days": 31,
+  "current_day": 17,
+  "synopsis": "A radio astronomer receives a signal from deep space that appears to contain a warning about Earth's future. As she races to decode it, she discovers the signal is coming from humanity itself — transmitted backward through time.",
+  "characters": [
+    {"id": "char-sarah", "name": "Sarah Chen", "role": "Lead — radio astronomer"},
+    {"id": "char-david", "name": "David Okafor", "role": "Supporting — NSA analyst"},
+    {"id": "char-elena", "name": "Elena Vasquez", "role": "Supporting — facility director"},
+    {"id": "char-james", "name": "James Park", "role": "Supporting — signal engineer"}
+  ],
+  "locations": [
+    {"id": "loc-apt", "name": "Sarah's Apartment", "int_ext": "INT"},
+    {"id": "loc-obs", "name": "Radio Observatory — Control Room", "int_ext": "INT"},
+    {"id": "loc-dish", "name": "Radio Observatory — Dish Array", "int_ext": "EXT"},
+    {"id": "loc-nsa", "name": "NSA Operations Center", "int_ext": "INT"},
+    {"id": "loc-roof", "name": "Observatory Rooftop", "int_ext": "EXT"}
+  ],
+  "key_props": [
+    {"id": "prop-camera", "name": "Camera P-14", "description": "Sarah's personal camera. Gets damaged in Scene 31 when she drops it during the first signal event. Damage is visible — cracked lens, dented body."},
+    {"id": "prop-notebook", "name": "Signal Notebook", "description": "Sarah's hand-written analysis notebook. Entries accumulate across scenes."},
+    {"id": "prop-headphones", "name": "Observatory Headphones", "description": "Vintage monitoring headphones Sarah uses at the dish array."},
+    {"id": "prop-badge", "name": "Security Badge", "description": "Sarah's facility access badge. Revoked in Scene 38."}
+  ],
+  "demo_scenario": {
+    "description": "The script change demo: Scene 42 changes 'damaged camera' to 'undamaged camera', triggering a cascade of dependency conflicts.",
+    "trigger_scene": 42,
+    "conflicting_scene": 31,
+    "prop_affected": "prop-camera"
+  }
+}

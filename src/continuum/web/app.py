@@ -41,6 +41,10 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
+# Vision subsystem routes (Google Video Intelligence + Vertex AI + Gemini multimodal)
+from continuum.web.vision_routes import router as vision_router  # noqa: E402
+app.include_router(vision_router)
+
 # Templates
 _WEB_DIR = Path(__file__).parent
 templates = Jinja2Templates(directory=_WEB_DIR / "templates")

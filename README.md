@@ -56,6 +56,37 @@ CONTINUUM knows the difference between data, inference, and decision:
 
 Only findings that survive the SKEPTIC's adversarial challenge get escalated to the crew.
 
+## Vision Subsystem
+
+CONTINUUM includes a vision subsystem that gives CONTINUITY, FINAL TAKE,
+and CASCADE eyes on the actual footage — not just the tabular metadata.
+
+The Vision subsystem idea was inspired by our internal AVI pipeline, but
+had to be completely redesigned to integrate Google's Vertex AI & Video
+Intelligence.
+
+| Google Service | Package | Role |
+|---|---|---|
+| Video Intelligence API | `google-cloud-videointelligence` | Shot / object / face / label / OCR / speech extraction from take video |
+| Gemini 3.5 Flash (multimodal) | `google-genai` | Structured continuity verdicts on keyframes given screenplay context |
+| Vertex AI `multimodalembedding@001` | `google-cloud-aiplatform` | 1408-dim image embeddings for nearest-frame lookup |
+| Cloud Storage | `google-cloud-storage` | Take asset inputs and provenance sidecars |
+
+Every observation carries provenance (source model, confidence, epistemic
+layer) and lands in dedicated ClickHouse tables (`frame_observations`,
+`take_dialogue`, `vision_verdicts`, `frame_embeddings`) that the existing
+agents query through their MCP toolset.
+
+Engines run in one of two modes selected by `CONTINUUM_VISION_ENGINE_MODE`:
+
+- `stub` — deterministic fixtures, zero Google quota consumed. Used by the
+  test suite and by the demo when credits are unavailable.
+- `real` — actual Google Cloud calls.
+
+Related files: `src/continuum/vision/`, `src/continuum/schema/vision_ddl.sql`,
+`src/continuum/tools/vision_tools.py`, `src/continuum/web/vision_routes.py`,
+`compliance/vision_blueprint_note.md`.
+
 ## Architecture
 
 ```

@@ -240,6 +240,6 @@ Apache License 2.0 — see [LICENSE](LICENSE).
 
 ## Author
 
-**Benjamin Duske** — [Aetherion Technology](https://aetheriontechnologys.com)
+**Benjamin Duske** — [Digital Real-Estate Frontier, LLC](https://digitalrealestatefrontier.com)
 
 Built for the [Agentic Cinema Hackathon](https://agentic-cinema.devpost.com/) (Google Cloud + ClickHouse Track).

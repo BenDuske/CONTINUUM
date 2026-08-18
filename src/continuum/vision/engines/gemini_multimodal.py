@@ -96,9 +96,16 @@ class GeminiMultimodalEngine(Engine):
     async def _call_gemini(
         self, *, asset: dict[str, Any], question: str, screenplay: str
     ) -> dict[str, Any]:
+        import os
+
         from continuum.vision.clients import gemini_client
 
         client = gemini_client()
+        # Model id may differ per backend:
+        #   API-key path : gemini-3.5-flash (default) or any current Gemini model
+        #   Vertex path  : gemini-2.5-flash / gemini-2.5-pro (3.x not yet in Vertex)
+        # Env override lets the operator pick without editing the registry.
+        model = os.environ.get("CONTINUUM_GEMINI_MODEL") or self._spec.source_model
         parts: list[Any] = [
             {"text": _VERDICT_SCHEMA_INSTRUCTIONS},
             {"text": f"SCREENPLAY EXCERPT:\n{screenplay or '(none provided)'}"},
@@ -106,7 +113,7 @@ class GeminiMultimodalEngine(Engine):
             {"file_data": {"file_uri": asset["gcs_uri"], "mime_type": asset.get("mime_type", "video/mp4")}},
         ]
         response = client.models.generate_content(
-            model=self._spec.source_model,
+            model=model,
             contents=parts,
             config={"response_mime_type": "application/json"},
         )

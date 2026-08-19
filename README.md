@@ -12,6 +12,13 @@
 
 **🚀 Live demo:** [`https://continuum-882642985987.us-central1.run.app`](https://continuum-882642985987.us-central1.run.app) *(Google Cloud Run, us-central1)*
 
+![CONTINUUM Production Command Center — Scene 42 with damaged Camera P-14 conflict](docs/img/01-dashboard.png)
+
+*The Production Command Center — Scene 42 flagged with a CRITICAL prop-state
+conflict (Camera P-14: damaged in Scene 31, undamaged in Scene 42), two
+missing shots, and a room-tone gap. The **WRAP SCENE** button is the moment
+the pipeline runs.*
+
 ---
 
 ## The Problem

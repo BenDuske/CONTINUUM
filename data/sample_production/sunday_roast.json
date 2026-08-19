@@ -1,0 +1,39 @@
+{
+  "production_id": "sr-002",
+  "title": "SUNDAY ROAST",
+  "genre": "Family drama · Short film",
+  "total_scenes": 12,
+  "total_shooting_days": 4,
+  "current_day": 2,
+  "synopsis": "A widowed father invites his three estranged adult children home for a Sunday roast. Over one meal, thirty years of resentment, forgiveness, and the letter their mother left unopened all land on the table.",
+  "characters": [
+    {"id": "char-frank", "name": "Frank Merrick", "role": "Lead — 68, the father, widowed 6 months"},
+    {"id": "char-julia", "name": "Julia Merrick", "role": "Eldest daughter — 41, corporate, drove up from Manchester"},
+    {"id": "char-tom", "name": "Tom Merrick", "role": "Middle son — 38, teacher, brought his partner"},
+    {"id": "char-sam", "name": "Sam Merrick", "role": "Youngest — 33, hasn't visited in 5 years"},
+    {"id": "char-priya", "name": "Priya Ali", "role": "Tom's partner — new to the family"}
+  ],
+  "locations": [
+    {"id": "loc-kitchen", "name": "Frank's Kitchen", "int_ext": "INT"},
+    {"id": "loc-dining", "name": "Frank's Dining Room", "int_ext": "INT"},
+    {"id": "loc-garden", "name": "Back Garden", "int_ext": "EXT"},
+    {"id": "loc-hallway", "name": "Front Hallway", "int_ext": "INT"}
+  ],
+  "key_props": [
+    {"id": "prop-letter", "name": "Mother's Letter", "description": "A sealed envelope in her handwriting, addressed 'To be opened when we're all together.' Sits on the mantel in Scenes 1-8. Opened in Scene 9. Its contents are shown to no one but the audience."},
+    {"id": "prop-roast", "name": "Sunday Roast", "description": "Lamb, potatoes, greens. Comes out of the oven in Scene 6 whole; is at various states of eaten from Scene 7 onward. Continuity trap: it must age plausibly across the dinner sequence."},
+    {"id": "prop-ring", "name": "Sam's Ring", "description": "Sam's engagement ring — never mentioned aloud, only visible on their hand from Scene 3 onward. Frank notices it in Scene 7 but says nothing until Scene 10."},
+    {"id": "prop-wine", "name": "The Wine", "description": "A bottle Frank has been saving. Level in the glass and bottle must decrease consistently across scenes 6-11."}
+  ],
+  "demo_scenario": {
+    "description": "The dressing-a-set demo: a re-shoot of Scene 8 accidentally uses a full wine bottle when Scene 7 already showed it half-drunk. CASCADE traces the impact: 4 scenes need matching bottle levels, and Priya's glass in Scene 9 must reflect what she poured in Scene 8. Continuity is what makes a small drama look expensive.",
+    "trigger_scene": 8,
+    "conflicting_scene": 7,
+    "prop_affected": "prop-wine"
+  },
+  "notes_for_agents": [
+    "This is intentionally the OPPOSITE of THE LAST SIGNAL — one house, one meal, one afternoon, four days of shooting. If CONTINUUM handles Scene 42 of a 47-scene sci-fi thriller AND the wine-level continuity of a 12-scene chamber drama with the same agent set, that's genre-independence.",
+    "Skeptic should route through here often — chamber drama is where 'the director meant it that way' is a genuine and frequent counter-argument to a continuity finding.",
+    "FinalTake's wrap decisions here hinge on coverage ratios that are much tighter than TLS-001 (shorter scenes, fewer angles, less room to fix in post)."
+  ]
+}

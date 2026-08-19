@@ -53,10 +53,13 @@ packages = ["src/continuum"]
 
 [tool.ruff]
 target-version = "py310"
-line-length = 100
+line-length = 120
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "W"]
+# Long lines in scripts/load_sample_data.py are inline sample-data strings; runner.py has
+# long prompt/context strings passed to the ADK — breaking them hurts readability more than helps.
+per-file-ignores = { "scripts/load_sample_data.py" = ["E501"], "src/continuum/runner.py" = ["E501"] }
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"

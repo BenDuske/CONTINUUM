@@ -5,7 +5,6 @@ from continuum.schema.models import (
     EpistemicState,
     ProductionEvent,
     Scene,
-    Severity,
     Take,
     TakeRating,
 )

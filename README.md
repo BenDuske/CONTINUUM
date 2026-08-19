@@ -4,6 +4,7 @@
 
 > *Know you have the movie before you leave the set.*
 
+[![CI](https://github.com/BenDuske/CONTINUUM/actions/workflows/ci.yml/badge.svg)](https://github.com/BenDuske/CONTINUUM/actions/workflows/ci.yml)
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
 [![Python](https://img.shields.io/badge/Python-3.10+-blue.svg)](https://python.org)
 [![Google Cloud](https://img.shields.io/badge/Google_Cloud-Gemini_+_ADK-4285F4.svg)](https://cloud.google.com)

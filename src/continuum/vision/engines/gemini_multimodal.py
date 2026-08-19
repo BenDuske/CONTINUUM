@@ -17,7 +17,6 @@ from continuum.vision.provenance import EpistemicLayer, Provenance
 from continuum.vision.registry import ENGINE_REGISTRY
 from continuum.vision.stubs.fixtures import gemini_verdict_fixture
 
-
 _VERDICT_SCHEMA_INSTRUCTIONS = """You are a film continuity analyst. Given the
 screenplay excerpt and the supplied media, answer the QUESTION.
 Return STRICT JSON with fields:

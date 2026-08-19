@@ -4,7 +4,6 @@ from __future__ import annotations
 
 from continuum.vision.registry import ENGINE_REGISTRY, engines_supporting
 
-
 ALLOWED_PROVIDERS = {
     "google-cloud-videointelligence",
     "google-genai",

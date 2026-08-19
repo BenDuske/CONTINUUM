@@ -32,8 +32,7 @@ _REPO = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(_REPO / "src"))
 
 from continuum.vision.engines.base import EngineMode  # noqa: E402
-from continuum.vision.ingest import ingest_asset      # noqa: E402
-
+from continuum.vision.ingest import ingest_asset  # noqa: E402
 
 DEMO_ASSET = {
     "production_id": "tls-001",

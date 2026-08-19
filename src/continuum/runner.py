@@ -11,7 +11,6 @@ from __future__ import annotations
 import asyncio
 import logging
 import uuid
-from typing import AsyncGenerator
 
 from google.adk.agents import Agent
 from google.adk.runners import Runner
@@ -87,7 +86,6 @@ async def run_agent_query(query: str, user_id: str = "production") -> str:
 
     # Run the agent and collect response parts
     response_parts = []
-    final_text = ""
     async for event in runner.run_async(
         user_id=user_id,
         session_id=session_id,
@@ -102,7 +100,6 @@ async def run_agent_query(query: str, user_id: str = "production") -> str:
                 function_response = getattr(part, "function_response", None)
                 if text and not function_call and not function_response:
                     response_parts.append(text)
-                    final_text = text  # Keep track of the last text
 
     # Return all collected text, or just the final response
     if response_parts:

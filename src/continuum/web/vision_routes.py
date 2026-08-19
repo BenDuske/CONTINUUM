@@ -16,7 +16,6 @@ from pydantic import BaseModel, Field
 from continuum.vision.engines.base import EngineMode
 from continuum.vision.ingest import ingest_asset
 
-
 router = APIRouter(prefix="/api", tags=["vision"])
 
 

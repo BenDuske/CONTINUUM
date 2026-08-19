@@ -23,6 +23,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 import clickhouse_connect
+
 from continuum.config import config
 
 PRODUCTION_ID = "tls-001"
@@ -33,7 +34,7 @@ def generate_uuid() -> str:
 
 
 def main():
-    print(f"Loading sample data for THE LAST SIGNAL into ClickHouse...")
+    print("Loading sample data for THE LAST SIGNAL into ClickHouse...")
 
     client = clickhouse_connect.get_client(
         host=config.clickhouse.host,
@@ -231,7 +232,7 @@ def main():
     print(f"\n✅ Sample data loaded for '{production['title']}'")
     print(f"   Production ID: {PRODUCTION_ID}")
     print(f"   Scenes: {len(scenes_data)}")
-    print(f"   Demo scenario: Scene 42 camera continuity conflict")
+    print("   Demo scenario: Scene 42 camera continuity conflict")
 
 
 if __name__ == "__main__":

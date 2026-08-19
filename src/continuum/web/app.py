@@ -11,16 +11,16 @@ from __future__ import annotations
 
 import logging
 from contextlib import asynccontextmanager
+from pathlib import Path
 
 import clickhouse_connect
 from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
-from pathlib import Path
 from pydantic import BaseModel
 
-from continuum.config import config
 from continuum import runner
+from continuum.config import config
 
 logger = logging.getLogger(__name__)
 
@@ -43,6 +43,7 @@ app = FastAPI(
 
 # Vision subsystem routes (Google Video Intelligence + Vertex AI + Gemini multimodal)
 from continuum.web.vision_routes import router as vision_router  # noqa: E402
+
 app.include_router(vision_router)
 
 # Templates

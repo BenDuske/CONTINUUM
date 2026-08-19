@@ -17,6 +17,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 import clickhouse_connect
+
 from continuum.config import config
 
 
@@ -39,7 +40,7 @@ def main():
     raw_stmts = ddl.split(";")
     statements = []
     for s in raw_stmts:
-        lines = [l for l in s.split("\n") if not l.strip().startswith("--")]
+        lines = [line for line in s.split("\n") if not line.strip().startswith("--")]
         clean = "\n".join(lines).strip()
         if clean:
             statements.append(clean)
@@ -48,7 +49,7 @@ def main():
         print(f"  [{i}/{len(statements)}] {stmt[:80]}...")
         try:
             client.command(stmt)
-            print(f"  ✓ OK")
+            print("  ✓ OK")
         except Exception as e:
             print(f"  ✗ ERROR: {e}")
 

@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright 2026 Digital Real-Estate Frontier, LLC
 """Deterministic stub outputs.
 
 Reflect the shapes real Google services would return, seeded by asset id so

@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright 2026 Digital Real-Estate Frontier, LLC
 """CONTINUUM Runner — Initializes and runs the ADK agent pipeline.
 
 Connects the mcp-clickhouse MCP server to the agents, creates the runner,

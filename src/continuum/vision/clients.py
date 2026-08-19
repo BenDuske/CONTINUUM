@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright 2026 Digital Real-Estate Frontier, LLC
 """Lazy client factories for Google Cloud SDKs.
 
 Kept lazy so importing the vision package (for tests / stub mode) does not

@@ -1,0 +1,41 @@
+name: Feature request
+description: Suggest a capability that CONTINUUM should have.
+title: "[feature] "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem does this solve?
+      description: The user-facing pain, not the implementation.
+      placeholder: "When a scene wraps, I have no way to record the wrap decision back into ClickHouse."
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed capability
+      description: What CONTINUUM would let you do that it doesn't today.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Existing workarounds, or other approaches you weighed.
+    validations:
+      required: false
+  - type: dropdown
+    id: scope
+    attributes:
+      label: Scope
+      options:
+        - Agent behavior (routing / prompts)
+        - New ClickHouse table or schema change
+        - Web API / dashboard
+        - Vision subsystem
+        - Deployment / CI
+        - Documentation
+        - Other
+    validations:
+      required: true

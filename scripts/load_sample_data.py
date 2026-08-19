@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: Apache-2.0
+# Copyright 2026 Digital Real-Estate Frontier, LLC
 """Load sample production data for THE LAST SIGNAL into ClickHouse.
 
 Creates a realistic demo dataset that demonstrates CONTINUUM's agent pipeline:

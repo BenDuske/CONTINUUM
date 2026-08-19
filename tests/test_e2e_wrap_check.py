@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright 2026 Digital Real-Estate Frontier, LLC
 """E2E test for the signature demo — /api/production/{pid}/scene/{sid}/wrap-check.
 
 This test exercises the whole HTTP surface end-to-end WITHOUT touching

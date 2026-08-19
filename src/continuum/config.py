@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright 2026 Digital Real-Estate Frontier, LLC
 """CONTINUUM configuration — loaded from environment variables."""
 
 from __future__ import annotations

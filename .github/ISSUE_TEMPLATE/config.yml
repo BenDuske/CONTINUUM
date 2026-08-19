@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security issue
+    url: mailto:benduske1979@gmail.com
+    about: Do NOT open a public issue for security problems. Email instead.
+  - name: Live demo
+    url: https://continuum-882642985987.us-central1.run.app
+    about: Open the running Cloud Run service.

@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright 2026 Digital Real-Estate Frontier, LLC
 """End-to-end pipeline through every engine in stub mode.
 
 Uses a FakeSink so the writers path is exercised without a live ClickHouse.

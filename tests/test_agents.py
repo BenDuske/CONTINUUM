@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright 2026 Digital Real-Estate Frontier, LLC
 """Tests for CONTINUUM agent creation and configuration."""
 
 from google.adk.agents import Agent

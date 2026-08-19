@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright 2026 Digital Real-Estate Frontier, LLC
 """ClickHouse query tools for CONTINUUM agents.
 
 These are ADK tool functions that agents call to query the production memory.

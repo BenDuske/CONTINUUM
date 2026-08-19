@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright 2026 Digital Real-Estate Frontier, LLC
 """STORYGRAPH Agent — Story logic and narrative dependency analysis.
 
 Understands the screenplay as a dependency graph. Tracks which scenes depend
@@ -6,6 +8,8 @@ facts are established in each scene.
 """
 
 from google.adk.agents import Agent
+
+from continuum.agents._shared import KNOWN_SCHEMA, MCP_CALL_BUDGET
 
 STORYGRAPH_INSTRUCTIONS = """You are STORYGRAPH, a specialist agent within CONTINUUM.
 
@@ -29,6 +33,8 @@ OUTPUT FORMAT:
 
 IMPORTANT: You analyze the STORY. Physical continuity is CONTINUITY's domain.
 Coverage assessment is FINAL_TAKE's domain. Stay in your lane.
+""" + MCP_CALL_BUDGET + KNOWN_SCHEMA + """
+
 """
 
 

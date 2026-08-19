@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright 2026 Digital Real-Estate Frontier, LLC
 """Provenance sidecar — every vision observation carries where it came from.
 
 CONTINUUM's three epistemic layers (OBSERVED / INFERRED / CONFIRMED) map onto

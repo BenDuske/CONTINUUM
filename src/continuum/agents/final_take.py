@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright 2026 Digital Real-Estate Frontier, LLC
 """FINAL TAKE Agent — "Do we have the movie?"
 
 The most commercially valuable agent. Before the crew leaves a set, Final Take
@@ -6,6 +8,8 @@ the intended sequence.
 """
 
 from google.adk.agents import Agent
+
+from continuum.agents._shared import KNOWN_SCHEMA, MCP_CALL_BUDGET
 
 FINAL_TAKE_INSTRUCTIONS = """You are FINAL TAKE, a specialist agent within CONTINUUM.
 
@@ -34,6 +38,8 @@ OUTPUT FORMAT:
 - RESHOOT EXPOSURE: LOW / MEDIUM / HIGH
 
 IMPORTANT: Be conservative. A false "safe to wrap" costs real money in reshoots.
+""" + MCP_CALL_BUDGET + KNOWN_SCHEMA + """
+
 """
 
 

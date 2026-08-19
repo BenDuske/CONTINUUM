@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright 2026 Digital Real-Estate Frontier, LLC
 """ADK tool functions for vision — exposed to CONTINUITY, FINAL TAKE, CASCADE.
 
 These are thin ClickHouse readers. They intentionally do NOT trigger new VI

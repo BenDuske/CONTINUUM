@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright 2026 Digital Real-Estate Frontier, LLC
 """Verdict-parsing tests for run_wrap_check.
 
 `run_wrap_check` calls Gemini via ADK, then reduces the free-text response to a

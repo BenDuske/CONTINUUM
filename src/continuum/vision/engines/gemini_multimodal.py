@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright 2026 Digital Real-Estate Frontier, LLC
 """Gemini multimodal engine — asks Gemini 3.5 Flash structured questions
 about a keyframe or short clip, given the relevant screenplay context.
 

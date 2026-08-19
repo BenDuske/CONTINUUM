@@ -1,0 +1,53 @@
+name: Bug report
+description: Something broken? File it here.
+title: "[bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to file a bug. The more concrete this is,
+        the faster it gets fixed.
+  - type: input
+    id: version
+    attributes:
+      label: Version / commit
+      description: git SHA (or `main`), and whether you're hitting the live Cloud Run URL or a local checkout.
+      placeholder: "main @ abc1234, local"
+    validations:
+      required: true
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: What you did, what you expected, what actually happened.
+      placeholder: |
+        1. Ran `pytest tests/test_e2e_wrap_check.py`
+        2. Expected all 3 tests to pass
+        3. Got `AssertionError: verdict was SAFE_TO_WRAP` on the first test
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs / traceback
+      description: Full traceback or relevant log lines. Mask credentials.
+      render: shell
+    validations:
+      required: false
+  - type: input
+    id: env
+    attributes:
+      label: Environment
+      placeholder: "Python 3.12, macOS 14, ClickHouse Cloud us-central1"
+    validations:
+      required: false
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Sanity checks
+      options:
+        - label: I searched existing issues.
+          required: true
+        - label: I removed / masked any credentials from logs.
+          required: true

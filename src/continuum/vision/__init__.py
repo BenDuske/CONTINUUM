@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright 2026 Digital Real-Estate Frontier, LLC
 """Vision subsystem — Google Video Intelligence + Vertex AI multimodal glue.
 
 The idea for this subsystem was inspired by our internal AVI pipeline, but had

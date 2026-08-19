@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright 2026 Digital Real-Estate Frontier, LLC
 """CONTINUUM Web Application — Production Command Center.
 
 FastAPI app serving the CONTINUUM dashboard. This is what filmmakers see:

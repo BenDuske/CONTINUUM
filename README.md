@@ -86,7 +86,38 @@ Engines run in one of two modes selected by `CONTINUUM_VISION_ENGINE_MODE`:
   test suite and by the demo when credits are unavailable.
 - `real` — actual Google Cloud calls.
 
-Related files: `src/continuum/vision/`, `src/continuum/schema/vision_ddl.sql`,
+### Try vision on a clip
+
+CONTINUUM ships with a runnable driver — `scripts/run_vision_real.py` —
+that fires all three Google Cloud engines against a take asset in GCS and
+prints what would land in ClickHouse (dry-run by default). Point it at the
+bundled demo take or your own clip:
+
+```bash
+# Dry-run against the bundled demo asset (scene-42, take-03).
+python scripts/run_vision_real.py
+
+# One engine at a time.
+python scripts/run_vision_real.py --engine gemini_multimodal
+python scripts/run_vision_real.py --engine video_intelligence
+python scripts/run_vision_real.py --engine imagen_embed
+
+# Real ClickHouse writes (needs CLICKHOUSE_HOST/USER/PASSWORD in the env).
+python scripts/run_vision_real.py --write
+
+# Your own clip in GCS.
+python scripts/run_vision_real.py --gcs gs://your-bucket/take.mp4
+```
+
+Required env (real mode):
+
+- `GOOGLE_APPLICATION_CREDENTIALS` — service-account JSON path
+- `GOOGLE_CLOUD_PROJECT`
+- `CONTINUUM_VISION_LOCATION` (defaults to `us-central1`)
+- `CONTINUUM_GCS_BUCKET`
+- `CONTINUUM_GEMINI_BACKEND=vertex` *or* `GOOGLE_GENAI_API_KEY`
+
+Related files: `src/continuum/vision/`, `src/continuum/schema/migrations/002_vision.sql`,
 `src/continuum/tools/vision_tools.py`, `src/continuum/web/vision_routes.py`,
 `compliance/vision_blueprint_note.md`.
 

@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright 2026 Digital Real-Estate Frontier, LLC
 """Registry sanity — every engine points at a Google Cloud provider."""
 
 from __future__ import annotations

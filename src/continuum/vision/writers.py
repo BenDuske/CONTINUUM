@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright 2026 Digital Real-Estate Frontier, LLC
 """ClickHouse writers — take an EngineResult and INSERT its rows.
 
 Kept separate from the engines so tests can exercise engines against a

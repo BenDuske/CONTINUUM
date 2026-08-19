@@ -1,0 +1,18 @@
+name: Question
+description: Ask a question about how CONTINUUM works.
+title: "[question] "
+labels: ["question"]
+body:
+  - type: textarea
+    id: question
+    attributes:
+      label: Your question
+    validations:
+      required: true
+  - type: textarea
+    id: what-you-tried
+    attributes:
+      label: What have you already tried?
+      description: README, ARCHITECTURE.md, code, existing issues — where you looked before asking.
+    validations:
+      required: false

@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright 2026 Digital Real-Estate Frontier, LLC
 """ClickHouse MCP server integration for CONTINUUM.
 
 The official mcp-clickhouse server exposes these tools:

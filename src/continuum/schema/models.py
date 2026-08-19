@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright 2026 Digital Real-Estate Frontier, LLC
 """Core domain models for the Living Film Graph.
 
 Every production entity is temporal — CONTINUUM knows what was true and when.

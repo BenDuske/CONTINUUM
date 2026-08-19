@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright 2026 Digital Real-Estate Frontier, LLC
 """CONTINUITY Agent — Visual and narrative state consistency.
 
 The digital script supervisor. Tracks the physical state of everything
@@ -5,6 +7,8 @@ on screen across takes filmed out of order.
 """
 
 from google.adk.agents import Agent
+
+from continuum.agents._shared import KNOWN_SCHEMA, MCP_CALL_BUDGET
 
 CONTINUITY_INSTRUCTIONS = """You are CONTINUITY, a specialist agent within CONTINUUM.
 
@@ -41,6 +45,8 @@ For each issue found:
 
 IMPORTANT: You check PHYSICAL continuity. Story logic is STORYGRAPH's domain.
 Coverage assessment is FINAL_TAKE's domain. Stay in your lane.
+""" + MCP_CALL_BUDGET + KNOWN_SCHEMA + """
+
 """
 
 

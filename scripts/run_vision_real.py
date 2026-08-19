@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright 2026 Digital Real-Estate Frontier, LLC
 """Run the vision subsystem end-to-end in REAL mode against a GCS take asset.
 
 Fires all three Google Cloud engines and prints what would be inserted into

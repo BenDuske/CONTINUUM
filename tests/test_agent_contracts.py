@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright 2026 Digital Real-Estate Frontier, LLC
 """Per-agent contract tests.
 
 These tests are prompt-regression guards. They don't call Gemini — they assert

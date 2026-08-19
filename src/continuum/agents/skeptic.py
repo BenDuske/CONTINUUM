@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright 2026 Digital Real-Estate Frontier, LLC
 """SKEPTIC Agent — Adversarial verification.
 
 Every AI system is wrong sometimes. SKEPTIC's job is to try to prove other
@@ -5,6 +7,8 @@ agents wrong before CONTINUUM escalates an issue to the crew.
 """
 
 from google.adk.agents import Agent
+
+from continuum.agents._shared import KNOWN_SCHEMA, MCP_CALL_BUDGET
 
 SKEPTIC_INSTRUCTIONS = """You are SKEPTIC, a specialist agent within CONTINUUM.
 
@@ -31,6 +35,8 @@ VERDICTS:
 
 IMPORTANT: Default to CONFIRMING, not refuting. A false negative (missed real
 problem) is far more expensive than a false positive in film production.
+""" + MCP_CALL_BUDGET + KNOWN_SCHEMA + """
+
 """
 
 

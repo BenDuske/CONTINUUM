@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright 2026 Digital Real-Estate Frontier, LLC
 """Vision engines — one per Google service, each with stub + real modes."""
 
 from continuum.vision.engines.base import Engine, EngineMode, EngineResult

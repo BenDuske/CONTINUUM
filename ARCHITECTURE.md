@@ -358,7 +358,7 @@ CONTINUUM/
 │   ├── mcp/
 │   │   └── clickhouse_mcp.py    # StdioServerParameters for mcp-clickhouse
 │   ├── schema/
-│   │   ├── clickhouse_ddl.sql   # ClickHouse CREATE TABLE statements
+│   │   ├── migrations/          # Numbered forward-only DDL (001_init.sql, 002_vision.sql, ...)
 │   │   └── models.py            # Pydantic domain models + enums
 │   ├── tools/
 │   │   └── clickhouse_tools.py  # Direct ClickHouse query functions

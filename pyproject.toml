@@ -11,30 +11,31 @@ authors = [
 keywords = ["film-production", "ai-agents", "gemini", "clickhouse", "google-cloud"]
 
 dependencies = [
-    # Google Cloud / Gemini / ADK
-    "google-adk>=2.0.0",
-    "google-genai>=1.0.0",
-    "google-cloud-aiplatform>=1.101.0",
-    "google-cloud-videointelligence>=2.13.0",
-    "google-cloud-storage>=2.14.0",
+    # Google Cloud / Gemini / ADK — upper bounds to guard hackathon week
+    # from a background major-version bump on fast-moving SDKs.
+    "google-adk>=2.0.0,<3",
+    "google-genai>=1.0.0,<2",
+    "google-cloud-aiplatform>=1.101.0,<2",
+    "google-cloud-videointelligence>=2.13.0,<3",
+    "google-cloud-storage>=2.14.0,<4",
 
-    # ClickHouse (production memory)
-    "mcp-clickhouse>=0.1.0",
-    "clickhouse-connect>=0.8.0",
+    # ClickHouse (production memory) — pre-1.0 SDKs, hard-cap at next major.
+    "mcp-clickhouse>=0.1.0,<1",
+    "clickhouse-connect>=0.8.0,<1",
 
-    # Parallel (research agent)
-    "parallel-web>=0.1.0",
+    # Parallel (research agent) — pre-1.0, hard-cap.
+    "parallel-web>=0.1.0,<1",
 
     # Web framework
-    "fastapi>=0.115.0",
-    "uvicorn[standard]>=0.30.0",
-    "jinja2>=3.1.0",
+    "fastapi>=0.115.0,<1",
+    "uvicorn[standard]>=0.30.0,<1",
+    "jinja2>=3.1.0,<4",
 
     # Utilities
-    "pydantic>=2.0.0",
-    "python-dotenv>=1.0.0",
-    "httpx>=0.27.0",
-    "rich>=13.0.0",
+    "pydantic>=2.0.0,<3",
+    "python-dotenv>=1.0.0,<2",
+    "httpx>=0.27.0,<1",
+    "rich>=13.0.0,<15",
 ]
 
 [project.optional-dependencies]

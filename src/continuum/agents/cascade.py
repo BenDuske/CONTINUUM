@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright 2026 Digital Real-Estate Frontier, LLC
 """CASCADE Agent — Change-impact propagation.
 
 "What does this change break?"
@@ -7,6 +9,8 @@ downstream consequence.
 """
 
 from google.adk.agents import Agent
+
+from continuum.agents._shared import KNOWN_SCHEMA, MCP_CALL_BUDGET
 
 CASCADE_INSTRUCTIONS = """You are CASCADE, a specialist agent within CONTINUUM.
 
@@ -47,6 +51,8 @@ B. [option — with estimated impact]
 
 IMPORTANT: Always distinguish between UPSTREAM dependencies (already filmed,
 expensive to fix) and DOWNSTREAM dependencies (not yet filmed, can be adapted).
+""" + MCP_CALL_BUDGET + KNOWN_SCHEMA + """
+
 """
 
 

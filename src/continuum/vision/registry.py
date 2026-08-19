@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright 2026 Digital Real-Estate Frontier, LLC
 """Capability registry — declares what each vision engine can do.
 
 Consulted by `ingest.py` to route a job to the right engine, and by the

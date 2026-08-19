@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright 2026 Digital Real-Estate Frontier, LLC
 """Imagen 3 multimodal-embedding engine.
 
 Produces 1408-dim vectors for keyframes / stills that CASCADE uses to find

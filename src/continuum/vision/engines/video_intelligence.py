@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright 2026 Digital Real-Estate Frontier, LLC
 """Video Intelligence engine — long-running analysis of take video assets.
 
 STUB mode reads a canned fixture so pipelines can be exercised end-to-end

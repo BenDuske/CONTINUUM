@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright 2026 Digital Real-Estate Frontier, LLC
 """Ingest — glue that runs a job end-to-end.
 
     take_media_assets row  →  Engine.analyze()  →  writers.write_result()

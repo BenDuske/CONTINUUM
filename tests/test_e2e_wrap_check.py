@@ -27,7 +27,6 @@ from fastapi.testclient import TestClient
 from continuum import runner
 from continuum.web.app import app
 
-
 # The kind of narrative response Gemini produces after querying ClickHouse
 # in the signature demo. Includes the shots/takes math + prop-state red flag.
 DEMO_SCENE_42_RESPONSE = """\

@@ -10,6 +10,8 @@
 [![Google Cloud](https://img.shields.io/badge/Google_Cloud-Gemini_+_ADK-4285F4.svg)](https://cloud.google.com)
 [![ClickHouse](https://img.shields.io/badge/ClickHouse-Cloud-FADB14.svg)](https://clickhouse.com)
 
+**🚀 Live demo:** [`https://continuum-882642985987.us-central1.run.app`](https://continuum-882642985987.us-central1.run.app) *(Google Cloud Run, us-central1)*
+
 ---
 
 ## The Problem

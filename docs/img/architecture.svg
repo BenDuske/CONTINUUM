@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 640" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif" role="img" aria-label="CONTINUUM architecture — Production Command Center calls the DIRECTOR agent, which routes to five specialist agents (STORYGRAPH, CONTINUITY, FINAL TAKE, CASCADE, SKEPTIC). Agents read and write ClickHouse Cloud through mcp-clickhouse. The vision subsystem writes frame observations from Google Video Intelligence, Vertex AI multimodal embeddings, and Gemini multimodal into ClickHouse.">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#5b6b7a"/>
+    </marker>
+    <marker id="arrHi" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#f2a900"/>
+    </marker>
+    <linearGradient id="hdr" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0" stop-color="#1f2a37"/>
+      <stop offset="1" stop-color="#111827"/>
+    </linearGradient>
+    <style><![CDATA[
+      .box { fill: #ffffff; stroke: #1f2a37; stroke-width: 1.5; rx: 10; ry: 10; }
+      .box-accent { fill: #eef4ff; stroke: #2b59c3; stroke-width: 1.75; }
+      .box-warm { fill: #fff7e6; stroke: #b8860b; stroke-width: 1.75; }
+      .box-mem { fill: #fef4d6; stroke: #b8860b; stroke-width: 2; }
+      .box-vision { fill: #eefaf1; stroke: #1e7a3c; stroke-width: 1.5; }
+      .title { font-size: 15px; font-weight: 700; fill: #0b1220; }
+      .sub { font-size: 11px; fill: #40506a; }
+      .lbl { font-size: 12px; fill: #2b3648; }
+      .link { stroke: #5b6b7a; stroke-width: 1.4; fill: none; }
+      .link-hi { stroke: #f2a900; stroke-width: 1.75; fill: none; stroke-dasharray: 5 4; }
+      .band { fill: url(#hdr); }
+      .band-text { fill: #f5f7fb; font-size: 13px; font-weight: 600; letter-spacing: 0.5px; }
+      .tag { font-size: 10px; fill: #5b6b7a; }
+    ]]></style>
+  </defs>
+
+  <!-- Title band -->
+  <rect class="band" x="0" y="0" width="1000" height="44"/>
+  <text class="band-text" x="24" y="28">CONTINUUM — Agentic Production Intelligence</text>
+  <text class="band-text" x="976" y="28" text-anchor="end" opacity="0.75">Gemini · Google ADK · ClickHouse Cloud</text>
+
+  <!-- User surface -->
+  <g>
+    <rect class="box box-accent" x="360" y="70" width="280" height="60"/>
+    <text class="title" x="500" y="96" text-anchor="middle">Production Command Center</text>
+    <text class="sub" x="500" y="114" text-anchor="middle">FastAPI + Jinja2 · Cloud Run (us-central1)</text>
+  </g>
+
+  <!-- Director -->
+  <g>
+    <rect class="box box-warm" x="380" y="170" width="240" height="66"/>
+    <text class="title" x="500" y="198" text-anchor="middle">DIRECTOR</text>
+    <text class="sub" x="500" y="216" text-anchor="middle">Orchestrator · Gemini 3.5 Flash</text>
+    <text class="tag" x="500" y="230" text-anchor="middle">Google ADK 2.x</text>
+  </g>
+
+  <!-- Specialists row -->
+  <g font-size="12">
+    <rect class="box" x="30"  y="290" width="170" height="66"/>
+    <text class="title" x="115" y="316" text-anchor="middle">STORYGRAPH</text>
+    <text class="sub"   x="115" y="334" text-anchor="middle">Narrative dependencies</text>
+
+    <rect class="box" x="215" y="290" width="170" height="66"/>
+    <text class="title" x="300" y="316" text-anchor="middle">CONTINUITY</text>
+    <text class="sub"   x="300" y="334" text-anchor="middle">Props · wardrobe · state</text>
+
+    <rect class="box" x="400" y="290" width="200" height="66"/>
+    <text class="title" x="500" y="316" text-anchor="middle">FINAL TAKE</text>
+    <text class="sub"   x="500" y="334" text-anchor="middle">"Can we wrap?" · coverage</text>
+
+    <rect class="box" x="615" y="290" width="170" height="66"/>
+    <text class="title" x="700" y="316" text-anchor="middle">CASCADE</text>
+    <text class="sub"   x="700" y="334" text-anchor="middle">Change → downstream impact</text>
+
+    <rect class="box" x="800" y="290" width="170" height="66"/>
+    <text class="title" x="885" y="316" text-anchor="middle">SKEPTIC</text>
+    <text class="sub"   x="885" y="334" text-anchor="middle">Adversarial verification</text>
+  </g>
+
+  <!-- Director -> specialists (fan-out) -->
+  <g class="link" marker-end="url(#arr)">
+    <path d="M440,236 C 300,260 200,270 130,290"/>
+    <path d="M470,236 C 380,260 320,270 300,290"/>
+    <path d="M500,236 L 500,290"/>
+    <path d="M530,236 C 620,260 660,270 700,290"/>
+    <path d="M560,236 C 720,260 820,270 885,290"/>
+  </g>
+
+  <!-- SKEPTIC challenge loop (highlighted) -->
+  <g class="link-hi" marker-end="url(#arrHi)">
+    <path d="M800,318 C 730,318 700,318 620,318"/>
+  </g>
+  <text class="tag" x="710" y="308" text-anchor="middle" fill="#a07200">verify · counter-evidence</text>
+
+  <!-- Command Center -> Director -->
+  <line class="link" x1="500" y1="130" x2="500" y2="170" marker-end="url(#arr)"/>
+
+  <!-- MCP toolset -->
+  <g>
+    <rect class="box" x="360" y="410" width="280" height="52"/>
+    <text class="title" x="500" y="434" text-anchor="middle">mcp-clickhouse (MCP toolset)</text>
+    <text class="sub"   x="500" y="450" text-anchor="middle">Read-mostly SQL · shared by all agents</text>
+  </g>
+
+  <!-- Specialists -> MCP -->
+  <g class="link" marker-end="url(#arr)">
+    <path d="M115,356 C 200,400 340,410 400,420"/>
+    <path d="M300,356 L 430,410"/>
+    <path d="M500,356 L 500,410"/>
+    <path d="M700,356 L 570,410"/>
+    <path d="M885,356 C 800,400 660,410 600,420"/>
+  </g>
+
+  <!-- ClickHouse Cloud (memory) -->
+  <g>
+    <rect class="box box-mem" x="330" y="510" width="340" height="90"/>
+    <text class="title" x="500" y="536" text-anchor="middle">ClickHouse Cloud — Living Film Graph</text>
+    <text class="sub"   x="500" y="554" text-anchor="middle">production_events · scenes · shots · takes</text>
+    <text class="sub"   x="500" y="570" text-anchor="middle">props · wardrobe · continuity_issues</text>
+    <text class="sub"   x="500" y="586" text-anchor="middle">frame_observations · vision_verdicts · frame_embeddings</text>
+  </g>
+  <line class="link" x1="500" y1="462" x2="500" y2="510" marker-end="url(#arr)"/>
+  <text class="tag" x="512" y="486" fill="#7a5c00">SQL over MCP</text>
+
+  <!-- Vision subsystem (feeds ClickHouse) -->
+  <g>
+    <rect class="box box-vision" x="700" y="510" width="270" height="90"/>
+    <text class="title" x="835" y="536" text-anchor="middle">Vision Subsystem</text>
+    <text class="sub"   x="835" y="554" text-anchor="middle">Google Video Intelligence</text>
+    <text class="sub"   x="835" y="570" text-anchor="middle">Vertex multimodalembedding@001</text>
+    <text class="sub"   x="835" y="586" text-anchor="middle">Gemini 3.5 Flash (multimodal verdicts)</text>
+  </g>
+  <path class="link" d="M700,555 L 670,555" marker-end="url(#arr)"/>
+
+  <!-- External research (optional) -->
+  <g>
+    <rect class="box" x="30" y="510" width="270" height="90"/>
+    <text class="title" x="165" y="536" text-anchor="middle">Parallel Search (optional)</text>
+    <text class="sub"   x="165" y="554" text-anchor="middle">Fact verification · grounding</text>
+    <text class="sub"   x="165" y="570" text-anchor="middle">Called by SKEPTIC when needed</text>
+    <text class="tag"   x="165" y="590" text-anchor="middle">parallel-web</text>
+  </g>
+  <path class="link" d="M300,555 L 330,555" marker-end="url(#arr)"/>
+
+  <!-- Epistemic legend -->
+  <g transform="translate(24,610)">
+    <text class="tag" x="0" y="0">Every write carries an epistemic layer: OBSERVED · INFERRED · CONFIRMED — SKEPTIC gates escalation.</text>
+  </g>
+</svg>

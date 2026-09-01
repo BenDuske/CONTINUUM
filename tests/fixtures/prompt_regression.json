@@ -1,0 +1,50 @@
+{
+  "_meta": {
+    "purpose": "Prompt-regression golden set. Each agent has a small vocabulary the rest of the system relies on. If a prompt edit silently drops one of these terms, the score falls and CI blocks the change. Scores are the fraction of required phrases still present in the (lower-cased) instruction string. Forbidden phrases score 0 if present.",
+    "score_threshold": 0.9
+  },
+  "director": {
+    "required": [
+      "storygraph", "continuity", "final_take", "cascade", "skeptic",
+      "wrap", "change", "route"
+    ],
+    "forbidden": ["claude", "gpt-", "openai"]
+  },
+  "continuity": {
+    "required": [
+      "prop", "wardrobe", "story order",
+      "damaged", "intact", "continuum.props"
+    ],
+    "forbidden": ["shoot order only"]
+  },
+  "final_take": {
+    "required": [
+      "shots", "takes", "coverage confidence",
+      "safe to wrap", "wrap with risks", "not safe to wrap"
+    ],
+    "forbidden": []
+  },
+  "cascade": {
+    "required": [
+      "scene", "shot", "take",
+      "downstream", "already filmed",
+      "resolution"
+    ],
+    "forbidden": []
+  },
+  "skeptic": {
+    "required": [
+      "counter-evidence",
+      "confirmed", "weakened", "refuted",
+      "revisions", "override"
+    ],
+    "forbidden": []
+  },
+  "storygraph": {
+    "required": [
+      "scene", "dependenc",
+      "continuity"
+    ],
+    "forbidden": []
+  }
+}

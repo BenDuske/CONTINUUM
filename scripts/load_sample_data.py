@@ -73,6 +73,16 @@ def main():
          ["Sarah Chen"], ["Camera P-14"],
          ["Red jacket — wet"], ["scene-37", "scene-41"]),
 
+        # --- Second demo scenario: WARDROBE conflict (proves CONTINUITY generalizes past props) ---
+        # Scene 33 falls in the story between the rain-soaked scenes 31 and 42.
+        # The script currently describes the red jacket as "dry" here — that's
+        # the seeded conflict CONTINUITY has to catch.
+        ("scene-33", 33, "INT. NSA OPERATIONS CENTER — NIGHT",
+         "INT", "NSA Operations Center", "NIGHT",
+         "Sarah meets David at NSA Ops to share the raw signal data. She is wearing her red jacket — described in the current draft as clean and dry — moments after the rooftop rain sequence.",
+         ["Sarah Chen", "David Okafor"], [],
+         ["Red jacket — clean, dry"], ["scene-31", "scene-32"]),
+
         ("scene-47", 47, "INT. RADIO OBSERVATORY — CONTROL ROOM — NIGHT",
          "INT", "Radio Observatory — Control Room", "NIGHT",
          "Sarah presents her decoded findings to Elena and David. The damaged camera photos are projected on screen as evidence.",
@@ -141,6 +151,60 @@ def main():
         ],
     )
     print(f"  ✓ {len(props_data)} props loaded")
+
+    # --- Wardrobe (seeds the Scene 33 red-jacket conflict) ---
+    print("  Loading wardrobe...")
+    wardrobe_data = [
+        # State reflects the last on-screen event: rooftop rain in Scene 31.
+        # Scene 33 wants "dry"; Scene 42 confirms "wet" — the conflict fires
+        # at Scene 33 because story order says the jacket is still wet.
+        ("wardrobe-jacket-red", "Sarah Chen", "Red rain jacket",
+         ["scene-15", "scene-31", "scene-33", "scene-42"], "wet"),
+        ("wardrobe-lab-coat",   "Sarah Chen", "Observatory lab coat",
+         ["scene-4", "scene-12", "scene-47"], "clean"),
+    ]
+    client.insert(
+        "wardrobe",
+        data=[
+            [w[0], PRODUCTION_ID, w[1], w[2], w[3], w[4], datetime.now()]
+            for w in wardrobe_data
+        ],
+        column_names=[
+            "wardrobe_id", "production_id", "character", "description",
+            "scenes", "state", "updated_at",
+        ],
+    )
+    print(f"  ✓ {len(wardrobe_data)} wardrobe items loaded")
+
+    # --- Seeded continuity issue for the wardrobe conflict ---
+    print("  Seeding wardrobe continuity issue for Scene 33...")
+    client.insert(
+        "continuity_issues",
+        data=[[
+            generate_uuid(),
+            PRODUCTION_ID,
+            "scene-33",
+            "critical",
+            "wardrobe",
+            "Red rain jacket described as 'clean, dry' in Scene 33, but story order "
+            "places Scene 33 after the rooftop rain in Scene 31 where the jacket was "
+            "soaked. Scene 42 also depicts it wet. Either Scene 33 needs a wardrobe "
+            "beat explaining the change, or the description must be reconciled.",
+            [
+                "scene-31: rooftop rain, jacket soaked (OBSERVED)",
+                "scene-33: description 'clean, dry' (INFERRED from script)",
+                "scene-42: 'red jacket is soaked from the rain' (OBSERVED)",
+            ],
+            "inferred",
+            0,
+            datetime.now(),
+        ]],
+        column_names=[
+            "issue_id", "production_id", "scene_id", "severity", "category",
+            "description", "evidence", "epistemic", "resolved", "detected_at",
+        ],
+    )
+    print("  ✓ 1 seeded continuity issue")
 
     # --- Shots for Scene 42 (the demo scene) ---
     print("  Loading shots for Scene 42...")

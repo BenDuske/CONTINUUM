@@ -227,3 +227,81 @@ class TestHackathonCompliance:
         # injected at runtime.
         agent = factory(tools=[])
         assert agent is not None
+
+
+# --------------------------------------------------------------------------- #
+# Prompt-eval regression — golden-set scoring
+# --------------------------------------------------------------------------- #
+
+class TestPromptRegressionGoldenSet:
+    """Small offline golden set — every agent must retain the vocabulary that
+    the demo, downstream tools, and the compliance rules depend on.
+
+    Each agent gets a required-phrase list and a forbidden-phrase list drawn
+    from ``tests/fixtures/prompt_regression.json``. The score is:
+    (required phrases present) / (required phrases total). Any forbidden
+    phrase present forces the score to 0.0. Every agent must clear the
+    fixture-wide ``score_threshold`` (default 0.9).
+
+    The point isn't to prove correctness of Gemini's output — it's to catch
+    a prompt edit that silently drops a term the rest of CONTINUUM leans on,
+    before we notice on a live demo.
+    """
+
+    import json as _json
+    from pathlib import Path as _Path
+
+    _FIXTURE_PATH = _Path(__file__).parent / "fixtures" / "prompt_regression.json"
+    _FIXTURE = _json.loads(_FIXTURE_PATH.read_text(encoding="utf-8"))
+    _THRESHOLD = float(_FIXTURE["_meta"]["score_threshold"])
+
+    _FACTORIES = {
+        "director": create_director_agent,
+        "continuity": create_continuity_agent,
+        "final_take": create_final_take_agent,
+        "cascade": create_cascade_agent,
+        "skeptic": create_skeptic_agent,
+        "storygraph": create_storygraph_agent,
+    }
+
+    @staticmethod
+    def _score(instr: str, required: list[str], forbidden: list[str]) -> float:
+        for bad in forbidden:
+            if bad.lower() in instr:
+                return 0.0
+        if not required:
+            return 1.0
+        hits = sum(1 for phrase in required if phrase.lower() in instr)
+        return hits / len(required)
+
+    @pytest.mark.parametrize(
+        "agent_key",
+        [k for k in _FIXTURE.keys() if not k.startswith("_")],
+    )
+    def test_agent_meets_regression_threshold(self, agent_key):
+        spec = self._FIXTURE[agent_key]
+        instr = _instr(self._FACTORIES[agent_key]())
+        score = self._score(instr, spec.get("required", []), spec.get("forbidden", []))
+        assert score >= self._THRESHOLD, (
+            f"{agent_key} prompt regressed: score {score:.2f} < threshold "
+            f"{self._THRESHOLD:.2f}. Missing required phrases: "
+            f"{[p for p in spec.get('required', []) if p.lower() not in instr]}"
+        )
+
+    def test_writes_score_report(self, tmp_path):
+        """Emit a JSON report of all agent scores so CI can archive it as an
+        artifact and score deltas are visible across runs."""
+        report = {}
+        for key, factory in self._FACTORIES.items():
+            spec = self._FIXTURE[key]
+            instr = _instr(factory())
+            report[key] = {
+                "score": round(self._score(instr, spec.get("required", []), spec.get("forbidden", [])), 3),
+                "missing": [p for p in spec.get("required", []) if p.lower() not in instr],
+                "forbidden_hits": [p for p in spec.get("forbidden", []) if p.lower() in instr],
+            }
+        out = tmp_path / "prompt_regression_scores.json"
+        out.write_text(self._json.dumps(report, indent=2), encoding="utf-8")
+        # Sanity: every agent scored, every score in [0, 1].
+        assert set(report.keys()) == set(self._FACTORIES.keys())
+        assert all(0.0 <= r["score"] <= 1.0 for r in report.values())

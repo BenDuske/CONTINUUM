@@ -12,6 +12,36 @@
 
 **🚀 Live demo:** [`https://continuum-882642985987.us-central1.run.app`](https://continuum-882642985987.us-central1.run.app) *(Google Cloud Run, us-central1)*
 
+### Try it against the live deployment
+
+Four curl calls, no clone required — hit the running Cloud Run instance:
+
+```bash
+BASE=https://continuum-882642985987.us-central1.run.app
+
+# 1. Health — should return status=ok, clickhouse=connected
+curl -s $BASE/health
+
+# 2. FINAL TAKE — the signature wrap check on the seeded demo scene
+curl -sX POST $BASE/api/production/tls-001/scene/scene-42/wrap-check
+
+# 3. CONTINUITY — reason about prop / wardrobe state for Scene 33 (new)
+curl -sX POST $BASE/api/production/tls-001/scene/scene-33/continuity-check
+
+# 4. Free-form agent query (routed by DIRECTOR to the right specialist)
+curl -sX POST $BASE/api/agent/query \
+  -H "Content-Type: application/json" \
+  -d '{"query":"Can we wrap scene-42 in production tls-001?","production_id":"tls-001"}'
+```
+
+Or replay history — reconstruct the Living Film Graph at any past moment
+(ClickHouse's native time-travel over the event stream):
+
+```bash
+# State of the production 24 hours ago
+curl -s "$BASE/api/production/tls-001/timeline?at=$(python -c 'import datetime;print((datetime.datetime.utcnow()-datetime.timedelta(hours=24)).isoformat())')"
+```
+
 ![CONTINUUM Production Command Center — Scene 42 with damaged Camera P-14 conflict](docs/img/01-dashboard.png)
 
 *The Production Command Center — Scene 42 flagged with a CRITICAL prop-state
@@ -130,35 +160,13 @@ Related files: `src/continuum/vision/`, `src/continuum/schema/migrations/002_vis
 
 ## Architecture
 
-```
-                         CONTINUUM
-              ┌─────────────────────────┐
-              │   PRODUCTION COMMAND    │
-              │        CENTER           │
-              │     (FastAPI Web UI)    │
-              └────────────┬────────────┘
-                           │
-                    Gemini / Google ADK
-                           │
-                 CONTINUUM DIRECTOR
-                    Orchestrator Agent
-                           │
-        ┌──────────────────┼──────────────────┐
-        │                  │                  │
-   STORYGRAPH          FINAL TAKE         CASCADE
-      Agent               Agent             Agent
-        │                                     │
-   CONTINUITY                             SKEPTIC
-      Agent                                 Agent
-        │                                     │
-        └──────────────────┼──────────────────┘
-                           │
-              ┌────────────┴─────────────┐
-              │                          │
-         ClickHouse                  Parallel
-          MEMORY                     RESEARCH
-       (MCP Server)               (Search API)
-```
+![CONTINUUM architecture — Command Center → DIRECTOR → 5 specialists → mcp-clickhouse → ClickHouse Cloud + Vision APIs](docs/img/architecture.svg)
+
+The DIRECTOR agent routes each request to the specialists that can answer it.
+Every read and write goes through the shared `mcp-clickhouse` toolset into the
+Living Film Graph. The SKEPTIC challenges other agents' conclusions before
+they escalate to the crew, and every observation carries an epistemic layer
+(OBSERVED / INFERRED / CONFIRMED) so the interface can show its work.
 
 ### Technology Stack
 
@@ -219,6 +227,7 @@ Visit `http://localhost:8000` to see the Production Command Center.
 | `/api/production/{id}/status` | GET | Production metrics from ClickHouse |
 | `/api/production/{id}/scenes` | GET | List scenes with status |
 | `/api/production/{id}/scene/{id}` | GET | Scene detail with shots and takes |
+| `/api/production/{id}/timeline?at=` | GET | Reconstruct the Living Film Graph at any past moment (ClickHouse time-travel over the event stream) |
 | `/api/agent/query` | POST | Free-form agent query (Gemini + MCP) |
 | `/api/production/{id}/scene/{id}/wrap-check` | POST | FINAL TAKE wrap assessment |
 | `/api/production/{id}/scene/{id}/continuity-check` | POST | Continuity analysis |
